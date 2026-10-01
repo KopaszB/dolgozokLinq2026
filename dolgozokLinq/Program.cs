@@ -25,6 +25,32 @@ namespace dolgozokLinq
             Console.WriteLine($"A fizetések átlaga: {fizAtlag:F0}");
 
             //3.feladat
+            bool vaneRecski = dolgozok.Any(x => x.Telepules == "Recsk");
+            Console.WriteLine(vaneRecski?"Van recski dolgozó":"Nincs recski dolgozó");
+
+            //4.feladat
+            Console.WriteLine($"Tatai dolgozók: {dolgozok.Count(x=>x.Telepules== "Tata")} fő");
+
+            //5.feladat
+            dolgozok.ForEach(w => Console.WriteLine($"{w.Nev,-30} - {w.Fizetes}"));
+
+            //6.feladat
+                //1.módszer
+            List<Dolgozo> legmagasabbFizu = dolgozok.OrderByDescending(x => x.Fizetes).Take(1).ToList();
+            foreach (var item in legmagasabbFizu)
+            {
+                Console.WriteLine(item.Nev + " " +item.Fizetes);
+            }
+                //2.módszer
+            //var maxFizu = dolgozok.Max(x => x.Fizetes);
+            var maxIndex = dolgozok.FindIndex(x => x.Fizetes == dolgozok.Max(y => y.Fizetes));
+            Console.WriteLine(dolgozok[maxIndex].Nev + " " + dolgozok[maxIndex].Telepules);
+
+            //7.feladat
+            dolgozok.Where(x => x.Fizetes > dolgozok.Average(y => y.Fizetes)).ToList().ForEach(w => Console.WriteLine($"Neve: {w.Nev}, fizetése: {w.Fizetes}"));
+
+            //8.feladat
+            dolgozok.Where(x=>x.Szuletes.ToString()==dolgozok.OrderBy(y=>y.Szuletes).Take(1).ToString()).ToList().ForEach(w => Console.WriteLine($"{w.Nev}"));
 
 
             Console.ReadKey();
@@ -42,28 +68,21 @@ namespace dolgozokLinq
         {
             try
             {
-                using (StreamReader olvas = new StreamReader("dolgozok.txt"))
-                {
-                    olvas.ReadLine();
-                    while (!olvas.EndOfStream)
-                    {
-                        string[] sor = olvas.ReadLine().Split(';');
-                        var egyDolgozo = new Dolgozo
-                            (
-                            byte.Parse(sor[0]),
-                            sor[1],
-                            sor[2],
-                            sor[3],
-                            sor[4],
-                            int.Parse(sor[5]),
-                            int.Parse(sor[6]),
-                            DateTime.Parse(sor[7]),
-                            DateTime.Parse(sor[8]),
-                            sor[9]
-                            );
-                        dolgozok.Add(egyDolgozo);
-                    }
-                }
+                dolgozok = File.ReadAllLines("dolgozok.txt")
+                    .Skip(1)
+                    .Select(sor => sor.Split(';'))
+                    .Select(adat => new Dolgozo(
+                        int.Parse(adat[0]),
+                        adat[1],
+                        adat[2],
+                        adat[3],
+                        adat[4],
+                        int.Parse(adat[5]),
+                        int.Parse(adat[6]),
+                        DateTime.Parse(adat[7]),
+                        DateTime.Parse(adat[8]),
+                        adat[9])
+                        ).ToList();
             }
             catch (Exception e)
             {

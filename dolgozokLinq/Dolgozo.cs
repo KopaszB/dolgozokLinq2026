@@ -8,7 +8,7 @@ namespace dolgozokLinq
 {
     internal class Dolgozo
     {
-        public Dolgozo(byte azonosito, string nev, string anyjaNeve, string telepules, string cim, int fizetes, int jutalom, DateTime belepes, DateTime szuletes, string szuletesHelye)
+        public Dolgozo(int azonosito, string nev, string anyjaNeve, string telepules, string cim, int fizetes, int jutalom, DateTime belepes, DateTime szuletes, string szuletesHelye)
         {
             Azonosito = azonosito;
             Nev = nev;
@@ -26,7 +26,7 @@ namespace dolgozokLinq
 Azonosító;Név;Anyjaneve;Település;Cím;Fizetés;Jutalom;Belépés;Születés;Születés helye
 */
 
-        public byte Azonosito { get; set; }
+        public int Azonosito { get; set; }
         public string Nev { get; set; }
         public string AnyjaNeve { get; set; }
         public string Telepules { get; set; }
